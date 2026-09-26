@@ -48,10 +48,10 @@ extern int mtk_nanohub_cfg_to_hub(uint8_t sensor_id, uint8_t *data, uint8_t coun
 #endif
 
 #define DEV_TAG                     "[sensor_devinfo] "
-#define DEVINFO_LOG(fmt, args...)   pr_err(DEV_TAG"%s %d : "fmt, __func__, __LINE__, ##args)
+#define DEVINFO_LOG(fmt, args...)   pr_debug(DEV_TAG"%s %d : "fmt, __func__, __LINE__, ##args)
 
 #define UINT2Ptr(n)     (uint32_t *)(n)
-#define Ptr2UINT32(p)   (uint32_t)(p)
+#define Ptr2UINT32(p)   (uintptr_t)(p)
 
 #define IS_SUPPROT_HWCALI           (0x01)
 #define IS_IN_FACTORY_MODE          (0x02)
@@ -71,7 +71,7 @@ extern int mtk_nanohub_cfg_to_hub(uint8_t sensor_id, uint8_t *data, uint8_t coun
 #define CALI_COE                    (0x05)
 #define ROW_COE                     (0x06)
 
-#define OPPOCUSTOM_FILE "/dev/block/by-name/oppo_custom"
+
 
 struct delayed_work parameter_work;
 struct delayed_work utc_work;
@@ -294,68 +294,8 @@ static inline int handle_to_sensor(int handle)
 
 static int read_oppo_custom(void *data)
 {
-    int ret = -1;
-    loff_t pos = 0;
-    mm_segment_t fs;
-    struct file* pfile = NULL;
-    sensor_config_info_t config_info;
-    sensor_cali_file_v1_t *data_v1 = NULL;
-    sensor_cali_file_v2_t *data_v2 = NULL;
-
-    fs = get_fs();
-    set_fs(KERNEL_DS);
-
-    pfile = filp_open(OPPOCUSTOM_FILE, O_RDONLY | O_TRUNC, 0);
-    if (IS_ERR(pfile)) {
-        set_fs(fs);
-        DEVINFO_LOG("failed to open file %s %p %d\n", OPPOCUSTOM_FILE, pfile, ret);
-        return ret;
-    }
-
-    if (!is_support_new_arch) {
-        data_v1 = (sensor_cali_file_v1_t *)data;
-        if (!data_v1) {
-            DEVINFO_LOG("data_v1 NULL\n");
-            filp_close(pfile, NULL);
-            set_fs(fs);
-            return ret;
-        }
-
-        ret = vfs_read(pfile, (void *)(&config_info), sizeof(config_info), &pos);
-        if (ret != sizeof(sensor_config_info_t)) {
-            DEVINFO_LOG("failed to read file %s %p\n", OPPOCUSTOM_FILE, pfile);
-            filp_close(pfile, NULL);
-            set_fs(fs);
-            return ret;
-        }
-        filp_close(pfile, NULL);
-        set_fs(fs);
-
-        memcpy(data_v1, config_info.Sensor, 256);
-    } else {
-        data_v2 = (sensor_cali_file_v2_t *)data;
-        if (!data_v2) {
-            DEVINFO_LOG("data_v2 NULL\n");
-            filp_close(pfile, NULL);
-            set_fs(fs);
-            return ret;
-        }
-
-        ret = vfs_read(pfile, (void *)(&config_info), sizeof(config_info), &pos);
-        if (ret != sizeof(sensor_config_info_t)) {
-            DEVINFO_LOG("failed to read file %s %p\n", OPPOCUSTOM_FILE, pfile);
-            filp_close(pfile, NULL);
-            set_fs(fs);
-            return ret;
-        }
-        filp_close(pfile, NULL);
-        set_fs(fs);
-
-        memcpy(data_v2, config_info.Sensor, 256);
-    }
-    DEVINFO_LOG("read success = %d\n", ret);
-
-    return 0;
+    /* Cubot P50: Stock MTK SensorHub defaults used; no raw oppo_custom partition */
+    return -ENOENT;
 }
 
 static int sensor_read_oppo_custom(struct cali_data *data)
@@ -858,23 +798,12 @@ static void oplus_als_cali_data_init(void)
 static void sensor_devinfo_work(struct work_struct *dwork)
 {
     int ret = 0;
-    int count = 10;
+    int count = 5;
     int index = 0;
     int cfg_data[12] = {0};
 
-    do {
-        ret = sensor_read_oppo_custom(g_cali_data);
-        if (ret) {
-            DEVINFO_LOG("try %d\n", count);
-            count--;
-            msleep(1000);
-        }
-    } while (ret && count > 0);
-
-    if (ret) {
-        DEVINFO_LOG("fail!\n");
-        return;
-    }
+    /* Cubot P50 uses standard SCP SensorHub defaults */
+    ret = 0;
 
     /*to make sure scp is up*/
     count = 5;
@@ -1094,7 +1023,7 @@ int get_msensor_parameter(int num)
     return 0;
 }
 
-void  mag_soft_parameter_init()
+void  mag_soft_parameter_init(void)
 {
     int ret = -1;
     int index = 0;
@@ -1232,7 +1161,7 @@ static const struct file_operations Sensor_info_fops = {
     .release = single_release,
 };
 
-static int oplus_sensor_feature_init()
+static int oplus_sensor_feature_init(void)
 {
     struct proc_dir_entry *p_entry;
     static struct proc_dir_entry *oplus_sensor = NULL;

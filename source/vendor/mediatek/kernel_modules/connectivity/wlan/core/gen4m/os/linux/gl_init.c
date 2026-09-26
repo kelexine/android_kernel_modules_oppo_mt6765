@@ -200,7 +200,7 @@ unsigned long long gConEmiSize;
 EXPORT_SYMBOL(gConEmiSize);
 #endif
 
-#if CFG_MTK_ANDROID_EMI
+#if (CFG_MTK_ANDROID_EMI || defined(CONFIG_MTK_EMI))
 phys_addr_t gConEmiPhyBaseFinal;
 unsigned long long gConEmiSizeFinal;
 #endif

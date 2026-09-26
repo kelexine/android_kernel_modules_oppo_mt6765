@@ -13,6 +13,6 @@
 
 obj-y += driver/
 obj-y += aw87339/
-obj-y += tfa98xx/
+obj-$(CONFIG_SND_SOC_TFA98XX) += tfa98xx/
 obj-$(CONFIG_SIA_PA_ALGO) += sia81xx/
 obj-$(CONFIG_SND_SOC_AW87XXX) += awinic/

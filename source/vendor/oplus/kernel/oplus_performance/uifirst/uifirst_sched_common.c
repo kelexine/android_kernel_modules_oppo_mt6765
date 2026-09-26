@@ -970,7 +970,7 @@ static inline void sched_init_ux_cputopo(void)
 		ux_sched_cputopo.sched_cls[i].capacity = ULONG_MAX;
 	}
 }
-int get_big_cluster_id()
+int get_big_cluster_id(void)
 {
         int i;
         int idx = 0;
@@ -1107,15 +1107,15 @@ bool is_task_util_over(struct task_struct *task, int threshold)
 	bool sum_over = false;
 	bool demand_over = false;
 
+#ifdef CONFIG_SCHED_WALT
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 4, 0))
 	sum_over = scale_demand(task->wts.sum) >= threshold;
 #else
 	sum_over = scale_demand(task->ravg.sum) >= threshold;
 #endif
-
-#ifdef CONFIG_OPLUS_SYSTEM_KERNEL_QCOM
 	demand_over = task_util(task) >= threshold;
 #else
+	sum_over = false;
 	demand_over = false;
 #endif
 

@@ -104,7 +104,7 @@
 
 #define RELEASE_INFO_SEPARATOR_LEN  16
 
-#if CFG_MTK_ANDROID_EMI
+#if (CFG_MTK_ANDROID_EMI || defined(CONFIG_MTK_EMI))
 #define WIFI_EMI_ADDR_MASK     0xFFFFFF
 extern phys_addr_t gConEmiPhyBaseFinal;
 extern unsigned long long gConEmiSizeFinal;
