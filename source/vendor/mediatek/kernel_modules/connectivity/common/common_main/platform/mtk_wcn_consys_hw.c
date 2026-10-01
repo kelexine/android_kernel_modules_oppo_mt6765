@@ -57,10 +57,6 @@
 
 #include <linux/thermal.h>
 
-#define OPLUS_MT6785_POWERINFO_STANDBY 1
-#ifdef OPLUS_MT6785_POWERINFO_STANDBY
-extern void oplus_rpmh_stats_statics(const char *rpm_name,u64 sleep_count,u64 sleep_time);
-#endif/*OPLUS_MT6785_POWERINFO_STANDBY*/
 /*******************************************************************************
 *                              C O N S T A N T S
 ********************************************************************************
@@ -534,18 +530,7 @@ INT32 mtk_wcn_consys_sleep_info_read_all_ctrl(P_CONSYS_STATE state)
 					((i == WMT_SLEEP_COUNT_WF) ? "WIFI" : ""),
 					((i == WMT_SLEEP_COUNT_GPS) ? "GPS" : ""),
 					sleep_counter, sleep_timer);
-			#ifdef OPLUS_MT6785_POWERINFO_STANDBY
-				if(i == WMT_SLEEP_COUNT_BT){
-					oplus_rpmh_stats_statics("BT",sleep_counter,sleep_timer);
-				}
-				if(i == WMT_SLEEP_COUNT_WF){
-					oplus_rpmh_stats_statics("WIFI",sleep_counter,sleep_timer);
-				}
-				if(i == WMT_SLEEP_COUNT_GPS){
-					oplus_rpmh_stats_statics("GPS",sleep_counter,sleep_timer);
-				}
 			}
-			#endif/*OPLUS_MT6785_POWERINFO_STANDBY*/
 			len += osal_sprintf(strbuf + len - 1, "");
 			WMT_PLAT_PR_INFO("%s\n", strbuf);
 		} else {
