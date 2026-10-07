@@ -1,0 +1,13 @@
+# Build and object artifacts
+*.o
+*.o.cmd
+*.o.d
+*.ko
+*.ko.cmd
+*.mod
+*.mod.c
+*.mod.o
+*.mod.o.cmd
+modules.order
+Module.symvers
+.tmp_versions/
