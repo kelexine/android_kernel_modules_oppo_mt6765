@@ -7768,7 +7768,7 @@ void wlanInitFeatureOption(IN struct ADAPTER *prAdapter)
 #if (CFG_SUPPORT_P2PGO_ACS == 1)
 	prWifiVar->ucP2pGoACS = (uint32_t) wlanCfgGetUint32(
 			prAdapter, "P2pGoACSEnable",
-			FEATURE_DISABLED);
+			FEATURE_ENABLED);
 	DBGLOG(INIT, TRACE,
 		"P2pGoACSEnable Setting:ACS Enable[%d]\n",
 		prAdapter->rWifiVar.ucP2pGoACS);

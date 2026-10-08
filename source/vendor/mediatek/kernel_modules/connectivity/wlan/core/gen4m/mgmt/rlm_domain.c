@@ -741,8 +741,8 @@ struct DOMAIN_INFO_ENTRY arSupportedRegDomains[] = {
 			{81, BAND_2G4, CHNL_SPAN_5, 1, 13, FALSE}
 			,			/* CH_SET_2G4_1_13 */
 
-			{115, BAND_NULL, 0, 0, 0, FALSE}
-			,			/* CH_SET_UNII_LOW_NA */
+			{115, BAND_5G, CHNL_SPAN_20, 36, 4, FALSE}
+			,			/* CH_SET_UNII_LOW_36_48 */
 			{118, BAND_5G, CHNL_SPAN_20, 52, 4, TRUE}
 			,			/* CH_SET_UNII_MID_52_64 */
 			{121, BAND_5G, CHNL_SPAN_20, 100, 11, TRUE}
@@ -985,8 +985,8 @@ struct DOMAIN_INFO_ENTRY arSupportedRegDomains_Passive[] = {
 			{82, BAND_2G4, CHNL_SPAN_5, 14, 0, FALSE}
 			,
 
-			{115, BAND_5G, CHNL_SPAN_20, 36, 0, FALSE}
-			,			/* CH_SET_UNII_LOW_NA */
+			{115, BAND_5G, CHNL_SPAN_20, 36, 4, FALSE}
+			,			/* CH_SET_UNII_LOW_36_48 */
 			{118, BAND_5G, CHNL_SPAN_20, 52, 4, TRUE}
 			,			/* CH_SET_UNII_MID_52_64 */
 			{121, BAND_5G, CHNL_SPAN_20, 100, 11, TRUE}
@@ -1006,8 +1006,8 @@ struct DOMAIN_INFO_ENTRY arSupportedRegDomains_Passive[] = {
 			{82, BAND_2G4, CHNL_SPAN_5, 14, 0, FALSE}
 			,
 
-			{115, BAND_5G, CHNL_SPAN_20, 36, 0, FALSE}
-			,			/* CH_SET_UNII_LOW_NA */
+			{115, BAND_5G, CHNL_SPAN_20, 36, 4, FALSE}
+			,			/* CH_SET_UNII_LOW_36_48 */
 			{118, BAND_5G, CHNL_SPAN_20, 52, 4, TRUE}
 			,			/* CH_SET_UNII_MID_52_64 */
 			{121, BAND_5G, CHNL_SPAN_20, 100, 12, TRUE}
